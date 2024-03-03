@@ -1,6 +1,7 @@
 ﻿using System;
+using DbUtils;
 using Microsoft.EntityFrameworkCore;
-using Utils;
+using ProgramUtils;
 
 namespace AsianStore {
   public class Program {
@@ -14,22 +15,22 @@ namespace AsianStore {
         Console.WriteLine("2. Add a product");
         Console.WriteLine("3. Delete a product");
         Console.WriteLine("4. Exit");
-        Console.Write("\nEnter your choice: ");
+        Console.WriteLine("\nEnter your choice: ");
 
         string? input = Console.ReadLine();
 
         switch (input) {
           case "1":
-            ProductsRetrieval.ListAllProducts(ProductsRetrieval.GetProductsAsList());
-            MetaUtils.AnyKeyPressPlease();
+            Console.Write(ProductsRetrieval.FormatProductList(ProductsRetrieval.GetProductsAsList()));
+            FormatUtils.AnyKeyPressPlease();
             break;
           case "2":
             ProductsAddition.AddProduct(ProductsAddition.GetNewProductDataFromClient());
-            MetaUtils.AnyKeyPressPlease();
+            FormatUtils.AnyKeyPressPlease();
             break;
           case "3":
             ProductsDeletion.DeleteProduct(ProductsRetrieval.GetClientToSelectExistingProduct(OperationList.Delete));
-            MetaUtils.AnyKeyPressPlease();
+            FormatUtils.AnyKeyPressPlease();
             break;
           case "4":
             continueRunning = false;
@@ -38,8 +39,6 @@ namespace AsianStore {
             Console.WriteLine("Invalid choice. Please enter a number between 1 and 4.");
             break;
         }
-
-        Console.WriteLine();
       }
     }
   }
