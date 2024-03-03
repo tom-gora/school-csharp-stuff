@@ -32,7 +32,7 @@ namespace DbUtils {
       }
     }
 
-    public static Product GetClientToSelectExistingProduct(OperationList operation) {
+    public static Product? GetClientToSelectExistingProduct(OperationList operation) {
       string operationName = operation switch {
         OperationList.ListDetails => "list details",
         OperationList.Modify => "modify",
@@ -42,10 +42,11 @@ namespace DbUtils {
       List<Product> products = GetProductsAsList();
       Console.Clear();
       string productsListTxt = FormatProductList(products);
-      string message = productsListTxt + $"\nEnter product number that you want to {operationName.ToLower()}: ";
+      string message = productsListTxt + $"\nEnter product number that you want to {operationName.ToLower()}:\n(Type in 'exit' to go back) ";
 
-      int selectedId = InputValidators.TakeAndValidateInputInt(message);
-      return products[selectedId - 1];
+      int? selectedId = InputValidators.TakeAndValidateInputInt(message);
+      if (selectedId == null) return null;
+      else return products[selectedId - 1 ?? 0];
     }
   }
 
@@ -62,32 +63,46 @@ namespace DbUtils {
       }
     }
 
-    public static Product GetNewProductDataFromClient() {
+    public static Product? GetNewProductDataFromClient() {
       Product newProduct = new Product();
 
-      string message = "Enter product name: ";
-      newProduct.name = InputValidators.TakeAndValidateInputString(message);
+      string message = "Enter product name:\n(Type in 'exit' to go back) ";
+      string? newName = InputValidators.TakeAndValidateInputString(message);
+      if (newName == null) return null;
+      else newProduct.name = newName;
 
-      message = $"Enter price in GBP for {newProduct.name}: ";
-      newProduct.price_in_gbp = InputValidators.TakeAndValidateInputFloat(message);
+      message = $"Enter price in GBP for {newProduct.name}:\n(Type in 'exit' to go back) ";
+      float? newPrice = InputValidators.TakeAndValidateInputFloat(message);
+      if (newPrice == null) return null;
+      else newProduct.price_in_gbp = newPrice ?? 0.0f;
 
-      message = $"Enter description for {newProduct.name}: ";
-      newProduct.description = InputValidators.TakeAndValidateInputString(message);
+      message = $"Enter description for {newProduct.name}:\n(Type in 'exit' to go back) ";
+      string? newDescription = InputValidators.TakeAndValidateInputString(message);
+      if (newDescription == null) return null;
+      else newProduct.description = newDescription;
 
-      message = $"Is {newProduct.name} in stock? (y/n or yes/no): ";
-      newProduct.availability = InputValidators.TakeAndValidateInputBool(message);
+      message = $"Is {newProduct.name} in stock? (y/n or yes/no)\n(Type in 'exit' to go back)";
+      bool? newAvailability = InputValidators.TakeAndValidateInputBool(message);
+      if (newAvailability == null) return null;
+      else newProduct.availability = newAvailability ?? false;
 
       if (newProduct.availability) {
-        message = $"Enter {newProduct.name} stock level: ";
-        newProduct.stock_level = InputValidators.TakeAndValidateInputInt(message);
+        message = $"Enter {newProduct.name} stock level:\n(Type in 'exit' to go back) ";
+        int? newStockLevel = InputValidators.TakeAndValidateInputInt(message);
+        if (newStockLevel == null) return null;
+        newProduct.stock_level = newStockLevel ?? 0;
       } else newProduct.stock_level = 0;
 
-      message = $"Is {newProduct.name} on promotion (y/n or yes/no): ";
-      newProduct.on_promo = InputValidators.TakeAndValidateInputBool(message);
+      message = $"Is {newProduct.name} on promotion (y/n or yes/no)\n(Type in 'exit' to go back) ";
+      bool? newOnPromo = InputValidators.TakeAndValidateInputBool(message);
+      if (newOnPromo == null) return null;
+      newProduct.on_promo = newOnPromo ?? false;
 
       if (newProduct.on_promo) {
-        message = $"What is the percentage of discount applied to {newProduct.name} ? ( Enter a number)";
-        newProduct.promo_rate_as_percentage = InputValidators.TakeAndValidateInputInt(message);
+        message = $"What is the percentage of discount applied to {newProduct.name}? (Enter a number)\n(Type in 'exit' to go back)";
+        int? newPromoRate = InputValidators.TakeAndValidateInputInt(message);
+        if (newPromoRate == null) return null;
+        newProduct.promo_rate_as_percentage = newPromoRate ?? 0;
       } else newProduct.promo_rate_as_percentage = 0;
 
       return newProduct;

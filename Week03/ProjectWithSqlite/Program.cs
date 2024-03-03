@@ -1,5 +1,6 @@
 ﻿using System;
 using DbUtils;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using ProgramUtils;
 
@@ -21,22 +22,32 @@ namespace AsianStore {
 
         switch (input) {
           case "1":
-            Console.Write(ProductsRetrieval.FormatProductList(ProductsRetrieval.GetProductsAsList()));
+            Console.Write
+              (ProductsRetrieval.FormatProductList
+               (ProductsRetrieval.GetProductsAsList()));
             FormatUtils.AnyKeyPressPlease();
             break;
           case "2":
-            ProductsAddition.AddProduct(ProductsAddition.GetNewProductDataFromClient());
-            FormatUtils.AnyKeyPressPlease();
+            Product? newProduct = ProductsAddition.GetNewProductDataFromClient();
+            if (newProduct != null) {
+              ProductsAddition.AddProduct(newProduct);
+              FormatUtils.AnyKeyPressPlease();
+            }
             break;
           case "3":
-            ProductsDeletion.DeleteProduct(ProductsRetrieval.GetClientToSelectExistingProduct(OperationList.Delete));
-            FormatUtils.AnyKeyPressPlease();
+            Product? productToDelete = ProductsRetrieval.GetClientToSelectExistingProduct(OperationList.Delete); ;
+            if (productToDelete != null) {
+              ProductsDeletion.DeleteProduct(productToDelete);
+              FormatUtils.AnyKeyPressPlease();
+            }
             break;
           case "4":
             continueRunning = false;
             break;
           default:
-            Console.WriteLine("Invalid choice. Please enter a number between 1 and 4.");
+            Console.WriteLine
+              ("Invalid choice. Please enter a number between 1 and 4.");
+            FormatUtils.AnyKeyPressPlease();
             break;
         }
       }

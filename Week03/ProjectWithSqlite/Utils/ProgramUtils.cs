@@ -15,10 +15,11 @@ namespace ProgramUtils {
   }
 
   public class InputValidators {
-    public static string TakeAndValidateInputString(string message) {
+    public static string? TakeAndValidateInputString(string message) {
       Console.Clear();
       Console.WriteLine(message);
       string? input = Console.ReadLine();
+      if (input == "exit") return null;
       while (string.IsNullOrWhiteSpace(input)) {
         Console.Clear();
         Console.WriteLine("The input cannot be empty. Please try again.\n");
@@ -28,10 +29,11 @@ namespace ProgramUtils {
       return input.ToString().Trim();
     }
 
-    public static int TakeAndValidateInputInt(string message) {
+    public static int? TakeAndValidateInputInt(string message) {
       Console.Clear();
       Console.WriteLine(message);
       string? input = Console.ReadLine();
+      if (input == "exit") return null;
       while (!int.TryParse(input, out int number) || number < 0) {
         Console.Clear();
         Console.WriteLine("The input must be a positive number. Please try again.\n");
@@ -41,24 +43,28 @@ namespace ProgramUtils {
       return int.Parse(input);
     }
 
-    public static float TakeAndValidateInputFloat(string message) {
+    public static float? TakeAndValidateInputFloat(string message) {
       Console.Clear();
       Console.WriteLine(message);
       string? input = Console.ReadLine();
-      while (!float.TryParse(input, out float number) || number < 0) {
-        Console.Clear();
-        Console.WriteLine("The input must be a positive numeric value. Please try again.\n");
-        Console.WriteLine(message);
-        input = Console.ReadLine();
+      if (input == "exit") return null;
+      else {
+        while (!float.TryParse(input, out float number) || number < 0) {
+          Console.Clear();
+          Console.WriteLine("The input must be a positive numeric value. Please try again.\n");
+          Console.WriteLine(message);
+          input = Console.ReadLine();
+        }
       }
       return float.Parse(input);
     }
 
 
-    public static bool TakeAndValidateInputBool(string message) {
+    public static bool? TakeAndValidateInputBool(string message) {
       Console.Clear();
       Console.WriteLine(message);
       string? input = Console.ReadLine();
+      if (input == "exit") return null;
       while (input != "n" && input != "y" && input != "yes" && input != "no") {
         Console.Clear();
         Console.WriteLine("The input must be either 'y' / 'n' or 'yes' / 'no'. Please try again.\n");
