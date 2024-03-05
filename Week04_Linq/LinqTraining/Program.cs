@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore;
 namespace BatmanLinq {
   class Program {
     static void Main(string[] args) {
-      BatmanFilmsContext db = new BatmanFilmsContext();
+      BatmanDb db = new BatmanDb();
       List<BatmanFilm>? films = db.BatmanFilms!.ToList();
 
-      BatmanActorsContext db2 = new BatmanActorsContext();
-      List<BatmanActor>? actors = db2.BatmanActors!.ToList();
+      List<BatmanActor>? actors = db.BatmanActors!.ToList();
 
-      List<BatmanFilmsJoinedWithActors> joinedTables = db.BatmanFilms.Join(db2.BatmanActors,
+      List<BatmanFilmsJoinedWithActors>? joinedTables = db.BatmanFilms!.Join(db.BatmanActors!,
           film => film.ActorID, actor => actor.ActorID, (film, actor) => new BatmanFilmsJoinedWithActors() {
             FilmID = film.FilmID,
             FilmTitle = film.FilmTitle,
@@ -39,5 +38,3 @@ namespace BatmanLinq {
     }
   }
 }
-
-// TODO: Who new you cannot perform joins on two distinct databases XD Bring in both tables into one DB tomorrow you dumb idiot tom XD
