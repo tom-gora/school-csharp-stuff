@@ -20,4 +20,19 @@ namespace BatmanDataContext {
       modelBuilder.Entity<BatmanActor>().HasKey(m => m.ActorID);
     }
   }
-}
+  public class BatmanDbRawSqlQueried : DbContext {
+    public DbSet<BatmanActor>? RawQueriedBatmanActors { get; set; }
+
+    protected override void OnConfiguring(
+        DbContextOptionsBuilder optionsBuilder) {
+      optionsBuilder.UseSqlite("Data Source=Resources/BatmanDatabase.db");
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+      modelBuilder.Entity<BatmanFilm>().HasKey(m => m.FilmID);
+      modelBuilder.Entity<BatmanActor>().HasKey(m => m.ActorID);
+    }
+    public List<BatmanActor> ExecuteSql(string q) {
+      return RawQueriedBatmanActors!.FromSqlRaw(q).ToList();
+    }
+  }
+};

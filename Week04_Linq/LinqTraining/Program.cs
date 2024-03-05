@@ -8,7 +8,6 @@ namespace BatmanLinq {
   class Program {
     static void Main(string[] args) {
       BatmanDb db = new BatmanDb();
-      //
       // getting rid of nullability warnings
       if (db.BatmanFilms == null || db.BatmanActors == null) {
         Console.WriteLine(
@@ -142,9 +141,24 @@ namespace BatmanLinq {
         Console.WriteLine(
             $"Film ID: {film.FilmID.ToString()!.PadRight(3)} Title: {film.FilmTitle.PadRight(30)} Release Year: {film.ReleaseYear.ToString()}");
       }
+      Console.WriteLine("\n-------------------- FINALLY TRYING OUT RUNNING RAW SQL INSTEAD OF THE ABSTRACTION\n");
+      using (BatmanDbRawSqlQueried dbRawSql = new BatmanDbRawSqlQueried()) {
+        string q = "SELECT * FROM BatmanActors;";
+        List<BatmanActor> rawQueriesActors = dbRawSql.ExecuteSql(q);
+        foreach (BatmanActor actor in rawQueriesActors) {
+          // do null checks
+          if (actor.ActorID == null) actor.ActorID = 0;
+          if (actor.FirstName == null) actor.FirstName = "missing first name";
+          if (actor.LastName == null) actor.LastName = "missing last name";
 
-
-
+          Console.WriteLine(
+              $"Actor ID: {actor.ActorID.ToString()!.PadRight(3)} Name: {actor.FirstName} {actor.LastName}");
+        }
+      }
     }
+
+
+
   }
 }
+
