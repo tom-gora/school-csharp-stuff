@@ -36,6 +36,7 @@ namespace BatmanLinq {
       Console.WriteLine("Regular listing\n");
       Console.WriteLine("-------------------- FILMS:\n");
       foreach (BatmanFilm film in films) {
+
         // do null checks
         if (film.FilmID == null) film.FilmID = 0;
         if (film.FilmTitle == null) film.FilmTitle = "missing title";
@@ -113,6 +114,36 @@ namespace BatmanLinq {
         Console.WriteLine(
             $"Film ID: {orderedJoinedListItem.FilmID.ToString()!.PadRight(3)} Title: {orderedJoinedListItem.FilmTitle.PadRight(30)} Actor: {orderedJoinedListItem.LastName} {orderedJoinedListItem.FirstName}");
       }
+
+      List<String>? filmTitlesOnly = db.BatmanFilms.Select(film => film.FilmTitle!).ToList();
+      Console.WriteLine("\n-------------------- ONLY MOVIE TITLES IN ORDER:\n");
+      for (int i = 0; i < filmTitlesOnly.Count; i++) {
+        if (filmTitlesOnly[i] == null) filmTitlesOnly[i] = "missing title";
+        Console.WriteLine(filmTitlesOnly[i]);
+      }
+
+      int startYear = 2000;
+      int cutoffYear = 2010;
+      List<BatmanFilm>? batmanFilmsFrom2000s = db.BatmanFilms.Where(film => film.ReleaseYear >= startYear && film.ReleaseYear <= cutoffYear).ToList();
+      Console.WriteLine("\n-------------------- ONLY MOVIES RELEASED IN 2000s\n");
+      foreach (BatmanFilm film in batmanFilmsFrom2000s) {
+        // do null checks
+        if (film.FilmID == null) film.FilmID = 0;
+        if (film.FilmTitle == null) film.FilmTitle = "missing title";
+        if (film.ReleaseYear == null) film.ReleaseYear = 0;
+        if (film.ActorID == null) film.ActorID = 0;
+
+        // preformat if title long
+        if (film.FilmTitle.Length > 27) film.FilmTitle =
+          film.FilmTitle.Substring(
+              0,
+              Math.Min(film.FilmTitle.Length, 27)) + "...";
+
+        Console.WriteLine(
+            $"Film ID: {film.FilmID.ToString()!.PadRight(3)} Title: {film.FilmTitle.PadRight(30)} Release Year: {film.ReleaseYear.ToString()}");
+      }
+
+
 
     }
   }
