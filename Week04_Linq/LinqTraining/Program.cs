@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BatmanDataContext;
 using Entities;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,43 @@ namespace BatmanLinq {
         Console.WriteLine(
             $"Film ID: {joinedListItem.FilmID.ToString()!.PadRight(3)} Title: {joinedListItem.FilmTitle.PadRight(30)} Actor: {joinedListItem.FirstName} {joinedListItem.LastName}");
       }
+
+      Console.WriteLine("\n-------------------- ORDERED DATA (By actor's Last name):\n");
+      List<BatmanFilmsJoinedWithActors>? orderedJoinedList = joinedList.OrderBy(actor => actor.LastName).ToList();
+      foreach (BatmanFilmsJoinedWithActors orderedJoinedListItem in orderedJoinedList) {
+        if (orderedJoinedListItem.FilmID == null) orderedJoinedListItem.FilmID = 0;
+        if (orderedJoinedListItem.FilmTitle == null) orderedJoinedListItem.FilmTitle = "missing title";
+        if (orderedJoinedListItem.ReleaseYear == null) orderedJoinedListItem.ReleaseYear = 0;
+        if (orderedJoinedListItem.FirstName == null) orderedJoinedListItem.FirstName = "missing first name";
+        if (orderedJoinedListItem.LastName == null) orderedJoinedListItem.LastName = "missing last name";
+
+        // preformat if title long
+        if (orderedJoinedListItem.FilmTitle.Length > 27) orderedJoinedListItem.FilmTitle =
+          orderedJoinedListItem.FilmTitle.Substring(
+              0, Math.Min(orderedJoinedListItem.FilmTitle.Length, 27)) + "...";
+
+        Console.WriteLine(
+            $"Film ID: {orderedJoinedListItem.FilmID.ToString()!.PadRight(3)} Title: {orderedJoinedListItem.FilmTitle.PadRight(30)} Actor: {orderedJoinedListItem.LastName} {orderedJoinedListItem.FirstName}");
+      }
+
+      Console.WriteLine("\n-------------------- ORDERED DATA (By film title descending):\n");
+      orderedJoinedList = joinedList.OrderByDescending(film => film.FilmTitle).ToList();
+      foreach (BatmanFilmsJoinedWithActors orderedJoinedListItem in orderedJoinedList) {
+        if (orderedJoinedListItem.FilmID == null) orderedJoinedListItem.FilmID = 0;
+        if (orderedJoinedListItem.FilmTitle == null) orderedJoinedListItem.FilmTitle = "missing title";
+        if (orderedJoinedListItem.ReleaseYear == null) orderedJoinedListItem.ReleaseYear = 0;
+        if (orderedJoinedListItem.FirstName == null) orderedJoinedListItem.FirstName = "missing first name";
+        if (orderedJoinedListItem.LastName == null) orderedJoinedListItem.LastName = "missing last name";
+
+        // preformat if title long
+        if (orderedJoinedListItem.FilmTitle.Length > 27) orderedJoinedListItem.FilmTitle =
+          orderedJoinedListItem.FilmTitle.Substring(
+              0, Math.Min(orderedJoinedListItem.FilmTitle.Length, 27)) + "...";
+
+        Console.WriteLine(
+            $"Film ID: {orderedJoinedListItem.FilmID.ToString()!.PadRight(3)} Title: {orderedJoinedListItem.FilmTitle.PadRight(30)} Actor: {orderedJoinedListItem.LastName} {orderedJoinedListItem.FirstName}");
+      }
+
     }
   }
 }
