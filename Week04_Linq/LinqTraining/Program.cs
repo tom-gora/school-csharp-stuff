@@ -25,15 +25,17 @@ namespace BatmanLinq {
       Console.WriteLine("Regular listing\n");
       Console.WriteLine("-------------------- FILMS:\n");
       foreach (BatmanFilm film in films) {
-        Console.WriteLine($"Film ID: {film.FilmID} Title: {film.FilmTitle}");
+        if (film.FilmTitle.Length > 27) film.FilmTitle = film.FilmTitle.Substring(0, Math.Min(film.FilmTitle.Length, 27)) + "...";
+        Console.WriteLine($"Film ID: {film.FilmID.ToString().PadRight(3)} Title: {film.FilmTitle.PadRight(30)} Release Year: {film.ReleaseYear.ToString()}");
       }
       Console.WriteLine("\n-------------------- ACTORS:\n");
       foreach (BatmanActor actor in actors) {
-        Console.WriteLine($"Actor ID: {actor.ActorID} Name: {actor.FirstName} {actor.LastName}");
+        Console.WriteLine($"Actor ID: {actor.ActorID.ToString().PadRight(3)} Name: {actor.FirstName} {actor.LastName}");
       }
       Console.WriteLine("\n-------------------- JOINED DATA:\n");
       foreach (BatmanFilmsJoinedWithActors joinedTable in joinedTables) {
-        Console.WriteLine($"Film ID: {joinedTable.FilmID} Title: {joinedTable.FilmTitle} Actor: {joinedTable.FirstName} {joinedTable.LastName}");
+        if (joinedTable.FilmTitle.Length > 27) joinedTable.FilmTitle = joinedTable.FilmTitle.Substring(0, Math.Min(joinedTable.FilmTitle.Length, 27)) + "...";
+        Console.WriteLine($"Film ID: {joinedTable.FilmID.ToString().PadRight(3)} Title: {joinedTable.FilmTitle.PadRight(30)} Actor: {joinedTable.FirstName} {joinedTable.LastName}");
       }
     }
   }
