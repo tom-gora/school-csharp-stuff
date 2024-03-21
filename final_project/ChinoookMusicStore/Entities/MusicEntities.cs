@@ -12,6 +12,12 @@ namespace Entities {
     public string Name { get; set; }
   }
 
+  public class AlbumWithArtistName {
+    public int AlbumId { get; set; }
+    public string Title { get; set; }
+    public string ArtistName { get; set; }
+  }
+
   public class Genre {
     public int GenreId { get; set; }
     public string Name { get; set; }
