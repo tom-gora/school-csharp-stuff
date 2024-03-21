@@ -7,6 +7,8 @@ using Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace ChinookMusicStore.Pages {
   public class PanelModel : PageModel {
@@ -33,6 +35,7 @@ namespace ChinookMusicStore.Pages {
       TracksContext tracksDbData = new TracksContext();
       CustomersContext customersDbData = new CustomersContext();
 
+
       // get id from session and match against employee data
       int EmployeeId = BitConverter.ToInt32(HttpContext.Session.Get("EmployeeId"), 0);
       Employee employee = employeeDbData.Employees.Where(e => e.EmployeeId == EmployeeId).FirstOrDefault();
@@ -41,7 +44,7 @@ namespace ChinookMusicStore.Pages {
       LoggedInEmployee = $"{employee.FirstName} {employee.LastName}";
       AlbumsJoined = albumsJoinedDbData.GetAlbumsWithArtistNames();
       AlbumCount = AlbumsJoined.Count;
-      ArtistCount = artistsDbData.ArtistCount;
+      ArtistCount = artistsDbData.Artists.Count();
       PlaylistsCount = playlistsDbData.PlaylistCount;
       TracksCount = tracksDbData.TrackCount;
       CustomersCount = customersDbData.CustomerCount;
@@ -49,10 +52,14 @@ namespace ChinookMusicStore.Pages {
       // if session exists and id set
       return Page();
     }
+
     public Task<IActionResult> OnPostLogout() {
       Console.WriteLine("Logged out");
       HttpContext.Session.Clear();
       return Task.FromResult<IActionResult>(RedirectToPage("Index", new { res = "loggedout" }));
     }
+
+
+
   }
 }
