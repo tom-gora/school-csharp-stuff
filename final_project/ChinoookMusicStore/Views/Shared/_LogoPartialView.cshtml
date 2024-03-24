@@ -11,6 +11,11 @@
 <style>
 #branding-section {
   --logo-font-family: "Lobster", cursive;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: fit-content;
+  text-wrap: nowrap;
 
     h1 {
     font-family: var(--logo-font-family);
@@ -20,7 +25,10 @@
       color: var(--brand-accent-color);
     }
 
-    h3 { font-size: 0.8rem;}
+    h3 { 
+  text-align: center;
+    font-size: 0.8rem;
+  }
 
     img {
       align-self: center;

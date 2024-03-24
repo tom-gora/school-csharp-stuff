@@ -14,7 +14,7 @@
       <a href="#">
         @await Html.PartialAsync("_LogoPartialView")
       </a>
-      <div>Logged in Admin: <strong> @Model.LoggedInEmployee </strong></div>
+      <div id="admin-identity">Logged in: <br><strong> @Model.LoggedInEmployee </strong></div>
 
         <form method="POST" action="~/Panel?handler=logout">
           @Html.AntiForgeryToken()
@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div class="right-column">
-        <p>* placeholder buttons * no functionality</p>
+        <p id="buttons-note">* placeholder buttons * no functionality</p>
             <section>
               <div class="button">View Albums</div>
               <div class="button">View Playlists</div>
@@ -140,17 +140,35 @@
           top: 0;
           width: 100dvw;
           max-height: 5rem;
-          padding: 0 2rem;
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
           align-items: center;
-          
-        a {
-          color: unset;
-          text-decoration: none;
-          display: flex;
-          justify-content: center;
+
+          #admin-identity { 
+            text-align: center;
+            @@media (max-width: 768px) {
+              position: absolute;
+              font-size: 0.8rem;
+              bottom: -2rem;
+              background-color: var(--brand-accent-color);
+              padding: 0.1rem 0.5rem;
+              color: #fff;
+              border-radius: var(--box-border-radius);
+              br {
+              display: none;
+            }
+              
+          }
         }
+          
+          a {
+            color: unset;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+            overflow: hidden;
+          }
       }
 
       #branding-section {
@@ -160,7 +178,8 @@
       #logout-btn {
           background-color: var(--error-background-color);
           color: #fff;
-          padding: 8px 16px;
+          padding: 0.5rem 1rem;
+          margin-right: 1rem;
           border: none;
           border-radius: 5px;
           cursor: pointer;
@@ -182,13 +201,22 @@
           margin: 20px;
           align-self: self-start;
 
-         @@media (width < 870px) { flex-direction: column; }
+         @@media (width < 870px) { 
+          flex-direction: column;
+          padding: 2rem 0;
+        }
       }
 
       .left-column {
           display: flex;
           justify-content: center;
           flex: 20%;
+
+          @@media (width < 870px) { 
+          flex: 100%;
+          max-width: 100vw;
+          justify-content: center;
+        }
         
         ul {
           background-color: color-mix(in srgb, var(--brand-accent-color) 20%, #fff 80%);
@@ -208,20 +236,33 @@
 
       .right-column {
           flex: 80%;
+
+          @@media (width < 870px) { 
+          flex: 100%;
+          max-width: 100vw;
+          justify-content: flex-start;
+      }
+
+          #buttons-note {
+          padding: 0.25rem 1rem 0 1rem;
+          margin-inline: auto;
+          text-align: center;
+          font-style: italic;
+          font-size: 0.75rem;
+          }
+
           section {
             padding: 1rem;
             display: grid;
             grid-template-columns: repeat(4, minmax(150px, 1fr));
             grid-gap: 0 1rem;
             place-items: center;
-          }
+
+            @@media (width < 870px) {
+             grid-template-columns: repeat(2, minmax(150px, 1fr));
+             grid-gap: 1rem 1rem;
+            }
           
-          p:first-child {
-          padding: 1rem;
-          text-align: center;
-          font-style: italic;
-          font-size: 0.75rem;
-          }
 
 
           .button {
@@ -247,6 +288,7 @@
         padding: 40px;
         max-width: 1200px;
         @@media (width < 680px) {
+          max-width: 90vw;
           padding-inline: 0;
         }
       }
@@ -260,9 +302,16 @@
          button {
           position: relative;
           padding-inline: 1rem;
+          padding-bottom: 0.3rem;
           width: max-content;
           color:var(--brand-accent-color);
           background-color: #fff;
+          @@media (width < 680px) {
+            position: absolute;
+            top: -3.5rem;
+            left: -4rem;
+            transform: translate(-50%, -50%);
+          }
 
           &::before {
             content: "";
@@ -293,7 +342,7 @@
         border-radius: var(--box-border-radius);
         overflow: hidden;
         @@media (width < 680px) {
-          max-width: 80vw;
+          max-width: 90vw;
       }
 
       @@media (width < 680px) {
@@ -306,6 +355,9 @@
         display: table-row;
         background: #f6f6f6;
 
+        @@media (width < 680px) {
+        padding: 0;
+        }
           &:nth-of-type(odd) {
             background: #e9e9e9;
           }
@@ -319,20 +371,20 @@
 
       @@media (width < 680px) {
         .row {
-          padding: 14px 0 7px;
           display: block;
 
             .header {
               padding: 0;
               height: 6px;
 
-            }
-            .header.cell {
-              display: none;
+                .cell {
+                  display: none;
+                }
             }
 
             .cell {
               margin-bottom: 10px;
+              @@media (width < 768px) {margin-bottom: 0;}
               
                 &:before {
                   margin-bottom: 3px;
