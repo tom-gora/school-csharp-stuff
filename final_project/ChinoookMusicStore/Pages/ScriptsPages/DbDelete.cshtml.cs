@@ -16,6 +16,14 @@ namespace Scripts {
 
     public List<AlbumWithArtistName> AlbumsJoined { get; set; }
 
+    // check if session is set and user is logged in
+    public IActionResult OnGet() {
+      if (HttpContext.Session == null || HttpContext.Session.GetString("EmployeeId") == null) {
+        Console.WriteLine("Session doesn't exist");
+        return RedirectToPage("../Index", new { res = "notloggedin" });
+      } else return RedirectToPage("../Panel", new { res = "noalbumiderror" });
+    }
+
     public IActionResult OnPostDeletealbum() {
       if (!Request.Query.TryGetValue("id", out var id)) return RedirectToPage("../Panel", new { res = "noalbumiderror" });
       int idToDelete = int.Parse(id[0]);

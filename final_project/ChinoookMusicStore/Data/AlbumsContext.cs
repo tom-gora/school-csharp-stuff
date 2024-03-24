@@ -65,6 +65,7 @@ namespace DataContext {
               (album, artist) => new AlbumWithArtistName {
                 AlbumId = album.AlbumId,
                 Title = album.Title,
+                ArtistId = artist.ArtistId,
                 ArtistName = artist.Name
               })
           .ToList();
