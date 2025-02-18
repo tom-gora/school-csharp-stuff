@@ -1,0 +1,175 @@
+@page
+@model ChinookMusicStore.Pages.IndexModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinook Album Management - Tom Gora B01665261</title>
+    <link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+      <h2>Admin Login</h2>
+      @await Html.PartialAsync("_LogoPartialView")
+      <div id="error-prompt">
+        <p>&nbsp;</p>
+      </div>
+      <form action="~/ScriptsPages/Auth" method="POST" class="login-form">
+      @Html.AntiForgeryToken()
+          <div class="form-group">
+              <label for="employee-email">Employee email:</label>
+              <input type="email" id="employee-email" name="employee-email" required>
+          </div>
+          <div class="form-group">
+              <label for="password">Password (Date of birth DDMMYYYY):</label>
+              <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit">Login</button>
+      </form>
+    </div>
+    <div id="author">
+      <p>Created by @Model.StudentName @Model.BannerID</p>
+      <p>@@ UWS 2024</p>
+
+    </div>
+</body>
+  <style>
+
+  :root {
+  --text-font-family: "Arimo", Arial, sans-serif;
+  --background-color: #d0d0d0;
+  --brand-accent-color: #0199ca;
+  --error-background-color: #eaad99;
+  --box-border-radius:0.5rem;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+body {
+    font-family: var(--text-font-family);
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background-color: var(--background-color);
+    position: relative;
+}
+
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: clamp(300px, 50%, 600px);
+    min-height: 50%;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border-radius: var(--box-border-radius);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#error-prompt {
+    opacity: 0;
+    align-self: center;
+    padding: 0.25rem 1rem;
+    width: 80%;
+    background-color: var(--error-background-color);
+    border-radius: var(--box-border-radius);
+
+  }
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  label {
+      display: block;
+      margin-block: .25rem;
+  }
+  input {
+      width: 80%;
+      padding: 0.5rem;
+      border: 1px solid var(--background-color);
+      border-radius: var(--box-border-radius) ;
+  }
+  input:focus-within {
+      outline: 2px solid var(--brand-accent-color);
+  }
+  button {
+      width: min-content;
+      align-self: center;
+      padding: 0.5rem 2rem;
+      background-color: var(--brand-accent-color);
+      color: #fff;
+      border: none;
+      border-radius: var(--box-border-radius);
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+  }
+  button:hover {
+      background-color: color-mix(in srgb, var(--brand-accent-color) 60%, black 40%);
+  }
+}
+  #author {
+    font-size: 0.8rem;
+    padding: 1rem;
+    align-self: end;
+    justify-self: end;
+    position: absolute;
+  }
+
+  @@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+  }
+  </style>
+  <script>
+  <!-- Allow page handle behavior based off returned params -->
+  document.addEventListener("DOMContentLoaded", function() {
+    let errorPrompt = document.querySelector("#error-prompt");
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let resParam = urlParams.get("res");
+
+    if (resParam && resParam === "invalidpass") {
+        errorPrompt.textContent = "Invalid credentials. Try again.";
+        errorPrompt.style.opacity = 1;
+    } else if (resParam && resParam === "notadate") {
+      errorPrompt.textContent = "The password had invalid format. Try again.";
+      errorPrompt.style.opacity = 1;
+    } else if (resParam && resParam === "notloggedin") {
+      errorPrompt.textContent = "You need to log in to access this page.";
+      errorPrompt.style.opacity = 1;
+    } else if (resParam && resParam === "loggedout") {
+      errorPrompt.textContent = "You have been logged out.";
+      errorPrompt.style.animation = "fadeout 3s ease-in-out forwards";
+    } else {
+        errorPrompt.textContent = "&nbsp;";
+        errorPrompt.style.opacity = 0;
+
+    }
+});
+  </script>
+</html>

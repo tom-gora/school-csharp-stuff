@@ -1,0 +1,110 @@
+@model Scripts.DbAdd
+<form method="post" class="edit-form" action="~/ScriptsPages/DbAdd?handler=applychanges">
+  @Html.AntiForgeryToken()
+  <div class="form-header">
+    <h2>Add new album details</h2>
+    <h2 id="header-title"></h2>
+    <h4 id="header-artist"></h4>
+  </div>
+  <div>
+  <label for="newAlbumTitle">Enter new album title</label>
+  <input required type="text" name="newAlbumTitle" placeholder="Album title" />
+  </div>
+  <div>
+  <label for="newArtistName">Enter new artist name</label>
+  <input required type="text" name="newArtistName" placeholder="Artist name" />
+  </div>
+  <div>
+  <button type="submit">Add album</button>
+  <button type="button" class="form-close" onclick="window.location.href = '../Panel'">Cancel</button>
+  </div>
+</form>
+
+<style>
+.edit-form {
+  --brand-accent-color: #0199ca;
+  --error-background-color: #eaad99;
+  --box-border-radius:0.5rem;
+  --slighty-darker-red: color-mix(in srgb, var(--error-background-color) 80%, darkred 20%);
+
+  display: flex;
+  flex-direction: column; 
+  gap: 2rem;
+  justify-content: space-around;
+  align-items: center;
+  width: 80%;
+  align-self: center;
+  margin-block: 1rem;
+
+  .form-header {
+    background-color: color-mix(in srgb, var(--brand-accent-color) 20%, #fff 80%);
+    padding: 1rem 0;
+    border-radius: var(--box-border-radius);
+    max-width: 150%;
+  }
+  h2:first-child { 
+    max-width: 100%;
+    margin-inline: 1rem;
+  }
+  h2:nth-child(2), h4 { max-width: 120%; }
+
+  h2:nth-of-type(2) { color: var(--brand-accent-color); }
+
+  div:not(.form-header) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+
+    label { font-weight: 600; }
+    input {width: 100%; padding: 0.25rem 0.5rem;}
+
+  }
+
+  div:last-of-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 1rem;
+  }
+  button {
+      width: 10rem;
+      align-self: center;
+      padding: 0.5rem 2rem;
+      background-color: var(--brand-accent-color);
+      color: #fff;
+      border: none;
+      border-radius: var(--box-border-radius);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+  }
+  button:hover {
+      background-color: color-mix(in srgb, var(--brand-accent-color) 60%, black 40%);
+  }
+  .form-close {
+                background-color: var(--error-background-color);
+            &:hover {
+              background-color: var(--slighty-darker-red);
+            }
+
+}
+</style>
+
+<script>
+  const titleInput = document.querySelector("input[name='newAlbumTitle']");
+  const artistInput = document.querySelector("input[name='newArtistName']");
+  const titleDisplay = document.querySelector("#header-title");
+  const artistDisplay = document.querySelector("#header-artist");
+  titleInput.addEventListener("input", e => {
+    if (e.target.value.length > 0 ) {
+      titleDisplay.innerText = "\"" + e.target.value + "\"";
+    } else { titleDisplay.innerText = ""; }
+  });
+  artistInput.addEventListener("input", e => {
+    if (e.target.value.length > 0 ) {
+      artistDisplay.innerText = "from " + e.target.value;
+    } else { artistDisplay.innerText = ""; }
+    }
+  );
+</script>
